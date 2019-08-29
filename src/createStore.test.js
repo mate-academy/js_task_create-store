@@ -1,16 +1,19 @@
 'use strict';
 
 const createStore = require('./createStore');
+const ACTION_INCREASE = 'increase';
+const ACTION_ADD = 'add';
+
 const stateWithCountReducer = (state, action) => {
   const { type } = action;
   switch (type) {
-    case 'increase':
+    case ACTION_INCREASE:
       return {
         ...state,
         count: state.count + 1,
       };
 
-    case 'add':
+    case ACTION_ADD:
       return {
         ...state,
         count: state.count + action.value,
