@@ -1,51 +1,34 @@
 'use strict';
 
 const createStore = require('./createStore');
-const ACTION_INCREASE = 'increase';
-const ACTION_ADD = 'add';
-
-const stateWithCountReducer = (state, action) => {
-  const { type } = action;
-  switch (type) {
-    case ACTION_INCREASE:
-      return {
-        ...state,
-        count: state.count + 1,
-      };
-
-    case ACTION_ADD:
-      return {
-        ...state,
-        count: state.count + action.value,
-      };
-
-    default:
-      return state;
-  }
-};
 
 {
+  // functions
+  const reducer = jest.fn(() => ({ count: 1 }));
+  const callback = jest.fn();
+
+  // store
   const initialState = { count: 0 };
-  const store = createStore(stateWithCountReducer, initialState);
+  const store = createStore(reducer, initialState);
 
+  store.subscribe(callback);
   store.dispatch({ type: 'increase' });
-  store.dispatch({ type: 'increase' });
-  store.dispatch({ type: 'increase' });
+  store.dispatch({ type: 'decrease' });
 
-  test('store should return count equal to 3', () => {
-    expect(initialState).toMatchObject({ count: 0 });
-    expect(store.getState()).toMatchObject({ count: 3 });
+  test('Reducer should be called twice', () => {
+    expect(reducer.mock.calls.length).toBe(2);
   });
-}
 
-{
-  const initialState = { count: 100, x: 1, y: 2 };
-  const store = createStore(stateWithCountReducer, initialState);
+  test('Store should return an object with state', () => {
+    expect(store.getState()).toMatchObject({ count: 1 });
+  });
 
-  store.dispatch({ type: 'add', value: 5 });
+  test('Reducer expects two arguments', () => {
+    expect(reducer).toBeCalledWith({ count: 0 }, { type: 'increase' });
+    expect(reducer).toBeCalledWith({ count: 1 }, { type: 'decrease' });
+  });
 
-  test('store should return count equal to 105', () => {
-    expect(initialState).toMatchObject({ count: 100, x: 1, y: 2 });
-    expect(store.getState()).toMatchObject({ count: 105, x: 1, y: 2 });
+  test('Callback should be called after each dispatch', () => {
+    expect(callback.mock.calls.length).toBe(2);
   });
 }
