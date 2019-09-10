@@ -1,4 +1,4 @@
-# Boilerplate for JS tasks
+# Implement createStore function
 
 **Read the guideline before start**
 
