@@ -1,10 +1,10 @@
 'use strict';
 
 const createStore = require('./createStore');
-const initialState = { count: 0 };
 
 describe('getState method', () => {
   const reducer = () => {};
+  const initialState = { count: 0 };
   const store = createStore(reducer, initialState);
 
   test('Store should return an object with the current state', () => {
@@ -14,6 +14,7 @@ describe('getState method', () => {
 
 describe('reducer', () => {
   const reducer = jest.fn(() => ({ count: 1 }));
+  const initialState = { count: 0 };
   const store = createStore(reducer, initialState);
 
   store.dispatch({ type: 'increase' });
@@ -34,6 +35,7 @@ describe('reducer', () => {
 
 describe('callbacks', () => {
   const reducer = () => {};
+  const initialState = { count: 0 };
   const callback1 = jest.fn();
   const callback2 = jest.fn();
   const store = createStore(reducer, initialState);
